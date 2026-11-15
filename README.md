@@ -63,6 +63,15 @@ ODDS_API_KEY=המפתח-שלך
 
 הקובץ `.env` לא עולה ל-GitHub. בענן המפתחות נשמרים כ-GitHub Secrets.
 
+## בענן (GitHub)
+
+- **כתובת הדף:** https://hadarfr222.github.io/nba-daily/
+- **המאגר:** https://github.com/hadarfr222/nba-daily
+- **תזמון:** הקובץ `.github/workflows/build.yml` מריץ את `build.py` על שרתי GitHub ב-08:00 ובערך ב-23:00 (שעון ישראל), וגם כל 3 שעות לרענון החדשות. זה רץ גם כשהמחשב כבוי.
+- **הרצה ידנית:** במאגר נכנסים ללשונית Actions, בוחרים "NBA page" ולוחצים Run workflow.
+- **מפתחות:** במאגר נכנסים ל-Settings, משם ל-Secrets and variables, ואז Actions. השמות: `YOUTUBE_API_KEY`, `ODDS_API_KEY`.
+- **ארכיון:** בכל ריצה נשמרים הדף והזיכרון (`site/`, `state/`) בחזרה למאגר, כך שהימים הקודמים לא נמחקים.
+
 ## מבנה הקבצים
 
 | קובץ | תפקיד |
