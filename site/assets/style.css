@@ -23,7 +23,7 @@ body {
   font-family: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.45;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(84px + env(safe-area-inset-bottom));
 }
 a { color: inherit; }
 img { display: block; }
@@ -68,7 +68,8 @@ bdi { unicode-bidi: isolate; direction: ltr; }
 
 /* section titles */
 section { margin-top: 26px; }
-h2.sec { font-size: 20px; font-weight: 800; margin: 0 0 12px; display: flex; gap: 8px; align-items: baseline; }
+h2.sec { font-size: 20px; font-weight: 800; margin: 0 0 12px; display: flex; gap: 8px; align-items: baseline; justify-content: space-between; }
+main > h2.sec:first-child { margin-top: 20px; }
 h2.sec .muted { font-size: 14px; }
 
 .card {
@@ -171,6 +172,7 @@ h2.sec .muted { font-size: 14px; }
 
 /* standings */
 .confs { display: grid; gap: 12px; }
+.conf { scroll-margin-top: 90px; }
 .conf { padding: 14px 10px; margin: 0; }
 .conf h3 { margin: 0 6px 8px; font-size: 16px; }
 .conf table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -224,4 +226,57 @@ footer { margin: 34px auto 28px; font-size: 13px; text-align: center; }
   .tile b { font-size: 22px; }
   .tile.main b { font-size: 25px; }
   .hero-id h2 { font-size: 27px; }
+}
+
+/* bottom tab bar */
+.tabbar {
+  position: fixed; inset: auto 0 0 0; z-index: 20;
+  background: rgba(10, 14, 22, .88);
+  backdrop-filter: saturate(160%) blur(16px);
+  -webkit-backdrop-filter: saturate(160%) blur(16px);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tabs { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+.tabs a {
+  display: grid; justify-items: center; gap: 2px; padding: 8px 0 7px;
+  text-decoration: none; color: var(--muted); font-size: 11px; font-weight: 700;
+}
+.tabs svg { width: 24px; height: 24px; fill: currentColor; }
+.tabs a.on { color: var(--accent); }
+
+/* section header link */
+.seemore { font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; white-space: nowrap; }
+h2.sec > span { display: flex; gap: 8px; align-items: baseline; }
+
+/* compact lists on the home screen */
+.card.list { padding: 4px 14px; }
+.mini {
+  display: grid; grid-template-columns: 1fr auto auto auto 1fr; align-items: center; gap: 8px;
+  padding: 11px 0; text-decoration: none; border-top: 1px solid rgba(255, 255, 255, .05);
+}
+.mini:first-child { border-top: 0; }
+.mside { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--muted); min-width: 0; }
+.mside span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mside.win { color: var(--text); font-weight: 800; }
+.mside.lose { justify-content: flex-end; }
+.mscore { font-size: 18px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 34px; text-align: center; }
+.mscore.win { color: var(--text); }
+.mdash { color: var(--muted); }
+.mtime { grid-column: 2 / 5; font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; text-align: center; min-width: 64px; }
+.mtime.live { color: var(--red); }
+.archive { margin-top: 26px; text-align: center; font-size: 13px; }
+.credits { text-align: center; font-size: 12px; margin: 18px 0 4px; }
+.game { scroll-margin-top: 90px; }
+
+/* East / West switch */
+#c-east, #c-west { position: absolute; opacity: 0; pointer-events: none; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.seg label { text-align: center; padding: 8px; border-radius: 9px; font-weight: 800; cursor: pointer; color: var(--muted); }
+#c-east:checked ~ .seg label[for="c-east"], #c-west:checked ~ .seg label[for="c-west"] { background: var(--card2); color: var(--text); }
+#c-east:checked ~ .confs .conf.west, #c-west:checked ~ .confs .conf.east { display: none; }
+@media (min-width: 700px) {
+  .seg { display: none; }
+  #c-east:checked ~ .confs .conf.west, #c-west:checked ~ .confs .conf.east { display: block; }
 }
