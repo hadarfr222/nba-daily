@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "echo 'nothing to install'",
+  "buildCommand": "echo 'the page is built by GitHub Actions into site/'",
+  "outputDirectory": "site",
+  "headers": [
+    {
+      "source": "/(.*).html",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    }
+  ]
+}

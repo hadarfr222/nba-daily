@@ -148,7 +148,7 @@ def standings_html(confs) -> str:
                          f'<span class="abbr">{e(r["abbr"])}</span></td>'
                          f'<td class="num"><bdi>{e(r["record"])}</bdi></td><td class="num">{e(r["gb"])}</td></tr>')
         out += f'''
-<div class="card conf">
+<div class="card conf {"east" if c["east"] else "west"}">
   <h3>{e(c["name"])}</h3>
   <table><thead><tr><th>#</th><th>קבוצה</th><th>מאזן</th><th>פער</th></tr></thead>
   <tbody>{body}</tbody></table>
@@ -235,66 +235,33 @@ def tonight_card(g) -> str:
 </article>'''
 
 
-# ---------- page ----------
+# ---------- pages ----------
 
-def page(data, base: str, archive_links: list[str]) -> str:
+TABS = [
+    ("index.html", "בית", '<path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'),
+    ("games.html", "תוצאות", '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2c1.2 0 2.4.3 3.4.8A12 12 0 0 0 13 11h-2a12 12 0 0 0-2.4-6.2A8 8 0 0 1 12 4zM6.9 6.1A10 10 0 0 1 9 11H4.1a8 8 0 0 1 2.8-4.9zM4.1 13H9a10 10 0 0 1-2.1 4.9A8 8 0 0 1 4.1 13zm4.5 6.2A12 12 0 0 0 11 13h2a12 12 0 0 0 2.4 6.2 8 8 0 0 1-6.8 0zm8.5-1.3A10 10 0 0 1 15 13h4.9a8 8 0 0 1-2.8 4.9zM15 11a10 10 0 0 1 2.1-4.9 8 8 0 0 1 2.8 4.9z"/>'),
+    ("standings.html", "טבלה", '<path d="M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm1 2v3h14V6zm0 5v3h14v-3zm0 5v2h14v-2z"/>'),
+    ("news.html", "חדשות", '<path d="M5 3h11a1 1 0 0 1 1 1v3h3a1 1 0 0 1 1 1v10a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V5a2 2 0 0 1 2-2zm12 6v9a1 1 0 0 0 2 0V9zM6 6v4h8V6zm0 6v2h8v-2zm0 4v2h8v-2z"/>'),
+    ("tonight.html", "הלילה", '<path d="M14.5 2.5a9.5 9.5 0 1 0 7 15.9A8 8 0 0 1 14.5 2.5z"/>'),
+]
+
+
+def layout(data, base: str, active: str, body: str) -> str:
     now = data["now_il"]
     games = data.get("games")
-    potn = data.get("potn")
-    n_games = len(games) if games is not None else None
-    breaking = next((n for n in (data.get("news") or []) if n["breaking"]), None)
-
-    parts = []
-    if breaking:
-        head = breaking.get("headline_he") or breaking["headline_en"]
-        parts.append(f'<a class="breaking-bar" href="#news"><span class="breaking">Breaking</span>'
-                     f'<span>{e(head)}</span></a>')
-
-    nav = [("games", "אמש"), ("standings", "טבלה"), ("news", "חדשות"), ("tonight", "הלילה")]
-    parts.append('<nav class="chips">' + "".join(
-        f'<a href="#{k}">{v}</a>' for k, v in nav) + '</nav>')
-
-    if potn:
-        parts.append(hero(potn))
-
-    if games is not None:
-        cards = "".join(game_card(g, (potn or {}).get("game_id")) for g in games)
-        if not games:
-            cards = '<div class="card empty">לא היו משחקים אמש</div>'
-        parts.append(f'<section id="games"><h2 class="sec">תוצאות אמש</h2>{cards}</section>')
-
-    top10 = data.get("top10")
-    if top10:
-        parts.append(f'''<section><h2 class="sec">טופ 10 מהלכים של הלילה</h2>
-<div class="card top10">{video_button(top10, "צפייה בטופ 10", "חיפוש טופ 10 ביוטיוב", big=True)}</div></section>''')
-
-    if data.get("standings"):
-        parts.append(f'<section id="standings"><h2 class="sec">טבלת הליגה '
-                     f'<span class="muted">עונת {e(data["season"])}</span></h2>'
-                     f'<div class="confs">{standings_html(data["standings"])}</div></section>')
-
-    if data.get("news") is not None:
-        body = news_html(data["news"]) or '<div class="card empty">אין חדשות משמעותיות ב-24 השעות האחרונות</div>'
-        parts.append(f'<section id="news"><h2 class="sec">חדשות</h2>{body}</section>')
-
-    if data.get("tonight") is not None:
-        tn = data["tonight"]
-        body = "".join(tonight_card(g) for g in tn) or '<div class="card empty">אין משחקים הלילה</div>'
-        parts.append(f'<section id="tonight"><h2 class="sec">הלילה ב-NBA '
-                     f'<span class="muted">{len(tn)} משחקים</span></h2>{body}</section>')
-
-    arch = ""
-    if archive_links:
-        arch = '<div class="archive"><span class="muted">ימים קודמים:</span> ' + " ".join(
-            f'<a href="{base}archive/{d}.html">{d[8:10]}/{d[5:7]}</a>' for d in archive_links) + "</div>"
-
-    count = f"{n_games} משחקים אמש" if n_games else ("לא היו משחקים אמש" if n_games == 0 else "")
+    n = len(games) if games is not None else None
+    count = f"{n} משחקים אמש" if n else ("לא היו משחקים אמש" if n == 0 else "")
+    tabs = "".join(
+        f'<a href="{f}"{" class=on aria-current=page" if f == active else ""}>'
+        f'<svg viewBox="0 0 24 24" aria-hidden="true">{icon}</svg><span>{label}</span></a>'
+        for f, label, icon in TABS)
+    title = next(label for f, label, _ in TABS if f == active)
     return f'''<!doctype html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>בוקר NBA | {now.day}/{now.month}</title>
+<title>{"" if active == "index.html" else title + " · "}בוקר NBA | {now.day}/{now.month}</title>
 <meta name="theme-color" content="#0a0e16">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -316,14 +283,104 @@ def page(data, base: str, archive_links: list[str]) -> str:
   </div>
 </header>
 <main class="wrap">
-{"".join(parts)}
+{body}
 </main>
-<footer class="wrap">
-  {arch}
-  <p class="muted">נתונים: ESPN · סרטונים: YouTube · הדף מתעדכן אוטומטית</p>
-</footer>
+<nav class="tabbar" aria-label="ניווט"><div class="tabs">{tabs}</div></nav>
 </body>
 </html>'''
+
+
+def mini_result(g) -> str:
+    w, l = g["winner"], g["loser"]
+    return (f'<a class="mini" href="games.html#g{e(g["id"])}">'
+            f'<span class="mside win">{logo(w["logo"], "logo sm")}<span>{e(w["he_short"])}</span></span>'
+            f'<b class="mscore win">{w["score"]}</b><span class="mdash">-</span><b class="mscore">{l["score"]}</b>'
+            f'<span class="mside lose"><span>{e(l["he_short"])}</span>{logo(l["logo"], "logo sm")}</span></a>')
+
+
+def mini_tonight(g) -> str:
+    a, h = g["away"], g["home"]
+    when = "חי" if g["live"] else f'{g["tip_il"]:%H:%M}'
+    return (f'<a class="mini" href="tonight.html">'
+            f'<span class="mside">{logo(a["logo"], "logo sm")}<span>{e(a["he_short"])}</span></span>'
+            f'<b class="mtime{" live" if g["live"] else ""}">{when}</b>'
+            f'<span class="mside lose"><span>{e(h["he_short"])}</span>{logo(h["logo"], "logo sm")}</span></a>')
+
+
+def sec_title(text, extra="", more_href=None, more_label="הכל"):
+    more = f'<a class="seemore" href="{more_href}">{more_label} ‹</a>' if more_href else ""
+    extra = f' <span class="muted">{extra}</span>' if extra else ""
+    return f'<h2 class="sec"><span>{text}{extra}</span>{more}</h2>'
+
+
+def home_body(data, base, archive_links) -> str:
+    parts = []
+    breaking = next((n for n in (data.get("news") or []) if n["breaking"]), None)
+    if breaking:
+        head = breaking.get("headline_he") or breaking["headline_en"]
+        parts.append(f'<a class="breaking-bar" href="news.html"><span class="breaking">Breaking</span>'
+                     f'<span>{e(head)}</span></a>')
+    if data.get("potn"):
+        parts.append(hero(data["potn"]))
+    games = data.get("games")
+    if games:
+        rows = "".join(mini_result(g) for g in games)
+        parts.append(f'<section>{sec_title("תוצאות אמש", "", "games.html", "לכל הנתונים")}'
+                     f'<div class="card list">{rows}</div></section>')
+    elif games == []:
+        parts.append('<section><div class="card empty">לא היו משחקים אמש</div></section>')
+    if data.get("top10"):
+        parts.append(f'<section>{sec_title("טופ 10 מהלכים")}<div class="card top10">'
+                     f'{video_button(data["top10"], "צפייה בטופ 10", "חיפוש טופ 10 ביוטיוב", big=True)}</div></section>')
+    tn = data.get("tonight")
+    if tn:
+        rows = "".join(mini_tonight(g) for g in tn[:4])
+        parts.append(f'<section>{sec_title("הלילה ב-NBA", f"{len(tn)} משחקים", "tonight.html", "סיכויים ותצוגה מקדימה")}'
+                     f'<div class="card list">{rows}</div></section>')
+    if archive_links:
+        links = " ".join(f'<a href="{base}archive/{d}/index.html">{d[8:10]}/{d[5:7]}</a>'
+                         for d in archive_links)
+        parts.append(f'<div class="archive"><span class="muted">ימים קודמים:</span> {links}</div>')
+    parts.append('<p class="credits muted">נתונים: ESPN · סרטונים: YouTube · מתעדכן אוטומטית</p>')
+    return "".join(parts)
+
+
+def games_body(data) -> str:
+    games = data.get("games")
+    if games is None:
+        return '<div class="card empty">התוצאות לא זמינות כרגע</div>'
+    if not games:
+        return '<div class="card empty">לא היו משחקים אמש</div>'
+    potn_id = (data.get("potn") or {}).get("game_id")
+    return sec_title("תוצאות אמש", f"{len(games)} משחקים") + "".join(
+        game_card(g, potn_id).replace('<article class="card game">',
+                                      f'<article class="card game" id="g{e(g["id"])}">', 1)
+        for g in games)
+
+
+def standings_body(data) -> str:
+    if not data.get("standings"):
+        return '<div class="card empty">הטבלה לא זמינה כרגע</div>'
+    return (sec_title("טבלת הליגה", f'עונת {e(data["season"])}')
+            + '<input type="radio" name="conf" id="c-east" checked><input type="radio" name="conf" id="c-west">'
+            + '<div class="seg"><label for="c-east">מזרח</label><label for="c-west">מערב</label></div>'
+            + f'<div class="confs">{standings_html(data["standings"])}</div>')
+
+
+def news_body(data) -> str:
+    items = data.get("news")
+    if items is None:
+        return '<div class="card empty">החדשות לא זמינות כרגע</div>'
+    return sec_title("חדשות", "24 השעות האחרונות") + (
+        news_html(items) or '<div class="card empty">אין חדשות משמעותיות ב-24 השעות האחרונות</div>')
+
+
+def tonight_body(data) -> str:
+    tn = data.get("tonight")
+    if tn is None:
+        return '<div class="card empty">משחקי הלילה לא זמינים כרגע</div>'
+    return sec_title("הלילה ב-NBA", f"{len(tn)} משחקים") + (
+        "".join(tonight_card(g) for g in tn) or '<div class="card empty">אין משחקים הלילה</div>')
 
 
 MANIFEST = '''{
@@ -344,9 +401,25 @@ MANIFEST = '''{
 '''
 
 
+def _write_pages(data, folder: Path, base: str, archive_links):
+    folder.mkdir(parents=True, exist_ok=True)
+    bodies = {
+        "index.html": home_body(data, base, archive_links),
+        "games.html": games_body(data),
+        "standings.html": standings_body(data),
+        "news.html": news_body(data),
+        "tonight.html": tonight_body(data),
+    }
+    for name, body in bodies.items():
+        (folder / name).write_text(layout(data, base, name, body), encoding="utf-8")
+
+
 def write_site(data, out_dir: Path):
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "archive").mkdir(exist_ok=True)
+    archive = out_dir / "archive"
+    archive.mkdir(exist_ok=True)
+    for old in archive.glob("*.html"):   # old one-file-per-day archive format
+        old.unlink()
     assets = out_dir / "assets"
     assets.mkdir(exist_ok=True)
     for f in STATIC.iterdir():
@@ -356,8 +429,8 @@ def write_site(data, out_dir: Path):
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
 
     today = data["now_il"].date().isoformat()
-    existing = sorted((p.stem for p in (out_dir / "archive").glob("*.html")), reverse=True)
-    older = [d for d in existing if d < today][:ARCHIVE_DAYS]
+    days = sorted((p.name for p in archive.iterdir() if p.is_dir()), reverse=True)
+    older = [d for d in days if d < today][:ARCHIVE_DAYS]
 
-    (out_dir / "index.html").write_text(page(data, "", older), encoding="utf-8")
-    (out_dir / "archive" / f"{today}.html").write_text(page(data, "../", older), encoding="utf-8")
+    _write_pages(data, out_dir, "", older)
+    _write_pages(data, archive / today, "../../", [])
