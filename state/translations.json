@@ -191,6 +191,10 @@
   "he": "טיירן סטוקס מקנזס יעבור בדיקת MRI לאחר יציאה מוקדמת מהמשחק נגד UNLV",
   "ts": 1795003357.3175695
  },
+ "Kevin Durant reaches 33,000 points as Rockets beat Suns": {
+  "he": "קווין דוראנט מגיע ל-33,000 נקודות כשרוקטס מנצחים את סאנס",
+  "ts": 1795704649.385952
+ },
  "Kevin Durant scores 21 to help Rockets overpower Pacers 119-104 despite losing Sengun to injury": {
   "he": "קווין דוראנט קולע 21 נקודות ועוזר לרוקטס לגבור על הפייסרס בתוצאה 119-104, למרות פציעתו של סנגון",
   "ts": 1795056201.392312
@@ -315,6 +319,10 @@
   "he": "ה-NBA חזרה. ההתרגשות מעולם לא פסקה. כדאי לשמור את הדף בסימניות כדי לקבל את החדשות, השמועות והניתוחים העדכניים ביותר מהמומחים של ESPN.",
   "ts": 1794858334.7995553
  },
+ "The Timberwolves did not have an update on the status of LaMelo Ball's left ankle after he was injured late Wednesday night's win over the Thunder.": {
+  "he": "לטימברוולבס לא היה עדכון לגבי מצבו של הקרסול השמאלי של לאמלו בול לאחר שנפצע בסוף משחק הניצחון על הת'אנדר ביום רביעי בלילה.",
+  "ts": 1795704646.7525175
+ },
  "The Timberwolves said Donte DiVincenzo has been cleared for basketball activities after Achilles surgery.": {
   "he": "הטימברוולבס הודיעו שדונטה די-וינצ'נזו קיבל אישור לחזור לפעילות כדורסל לאחר ניתוח בגיד אכילס.",
   "ts": 1795564778.0564482
@@ -331,6 +339,10 @@
   "he": "לעיתים קרובות קשה לפענח את עולם העסקאות ב-NBA. המנהל הכללי שלנו כאן כדי לעזור.﻿",
   "ts": 1794835591.1623194
  },
+ "Timberwolves beat the Thunder 113-106 to improve to 3-0 in NBA Cup play": {
+  "he": "הטימברוולבס ניצחו את הת'אנדר 113-106 ושיפרו את מאזנם ל-3-0 במשחקי גביע ה-NBA",
+  "ts": 1795704647.5045962
+ },
  "Timberwolves guard Anthony Edwards said he has \"no clue\" when he will return to play from right knee surgery weeks ago, but was optimistic about his long-term prognosis.": {
   "he": "הגארד של הטימברוולבס, אנתוני אדוארדס, אמר ש\"אין לו מושג\" מתי הוא יחזור לשחק לאחר הניתוח בברך ימין שעבר לפני שבועות, אבל הוא אופטימי לגבי התחזית לטווח הארוך.",
   "ts": 1795121587.3110914
@@ -338,6 +350,10 @@
  "Timberwolves' Edwards has 'no clue' on when he will return": {
   "he": "לאדוארדס מהטימברוולבס \"אין מושג\" מתי הוא יחזור",
   "ts": 1795121586.1978219
+ },
+ "Timberwolves' LaMelo Ball limps off vs. OKC after hurting left ankle": {
+  "he": "לאמלו בול מהטימברוולבס צולע החוצה במשחק נגד אוקלהומה סיטי ת'אנדר לאחר שפצע את הקרסול השמאלי שלו",
+  "ts": 1795704645.658763
  },
  "Trail Blazers rule star Deni Avdija out vs. Timberwolves with sore foot": {
   "he": "הטרייל בלייזרס משאירים את הכוכב דני אבדיה מחוץ למשחק נגד הטימברוולבס בגלל כאב בכף הרגל",
@@ -383,9 +399,17 @@
   "he": "— קופר פלאג קלע 33 נקודות, פי.ג'יי. וושינגטון ג'וניור הוסיף 21 ודאלאס מאבריקס עצרה רצף של שלושה הפסדים עם ניצחון 116-94 על גולדן סטייט ווריורס ביום רביעי בלילה.",
   "ts": 1795089528.1127646
  },
+ "— Jaden McDaniels had 32 points and 10 rebounds, LaMelo Ball added 19 points before leaving with an ankle injury and the Minnesota Timberwolves improved to 3-0 in NBA Cup play with a 113-106 win over the Oklahoma City Thunder on Wednesday night.": {
+  "he": "— ג'יידן מקדניאלס קלע 32 נקודות ולקח 10 ריבאונדים, לאמלו בול הוסיף 19 נקודות לפני שעזב עקב פציעה בקרסול, ומינסוטה טימברוולבס שיפרה את מאזנה ל-3-0 במשחקי גביע ה-NBA עם ניצחון 113-106 על אוקלהומה סיטי ת'אנדר ביום רביעי בלילה.",
+  "ts": 1795704648.683275
+ },
  "— Jayson Tatum scored 32 points in 30 minutes on a night the Boston Celtics set a franchise record for its lead at the end of the opening period on the way to a 131-94 win over the Dallas Mavericks on Sunday night.": {
   "he": "— ג'ייסון טייטום קלע 32 נקודות ב-30 דקות בערב שבו בוסטון סלטיקס קבעה שיא קבוצתי ליתרון שלה בסוף הרבע הראשון בדרך לניצחון 131-94 על דאלאס מאבריקס במוצאי ראשון.",
   "ts": 1794812488.660161
+ },
+ "— Kevin Durant scored 20 points and became the fifth player in NBA history to reach 33,000 points, helping the Houston Rockets beat the Phoenix Suns 116-104 on Wednesday night.": {
+  "he": "— קווין דוראנט קלע 20 נקודות והפך לשחקן החמישי בהיסטוריה של ה-NBA שהגיע ל-33,000 נקודות, ועזר ליוסטון רוקטס לנצח את פיניקס סאנס בתוצאה 116-104 ביום רביעי בלילה.",
+  "ts": 1795704650.267302
  },
  "— Kevin Durant scored 21 points and Reed Sheppard made six 3-pointers and finished with 20 points as the Houston Rockets beat the Indiana Pacers 119-104 on Wednesday night.": {
   "he": "— קווין דוראנט קלע 21 נקודות וריד שפרד קלע שש שלשות וסיים עם 20 נקודות, כשיוסטון רוקטס ניצחו את אינדיאנה פייסרס בתוצאה 119-104 ביום רביעי בלילה.",
